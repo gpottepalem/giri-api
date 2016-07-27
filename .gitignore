@@ -1,0 +1,7 @@
+# project files
+*.iml
+/.idea
+/.gradle
+/build/*
+*.log
+/log/
