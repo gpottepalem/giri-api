@@ -9,18 +9,20 @@ class BootStrap {
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
         def userRole = Role.findOrSaveByAuthority('ROLE_USER')
 
+        def adminUser = AppUser.findOrSaveByUsernameAndPassword('admin', 'admin')
         def testUser = AppUser.findOrSaveByUsernameAndPassword('me', 'password')
 
-        AppUserRole.create testUser, adminRole
+        AppUserRole.create testUser, userRole
+        AppUserRole.create adminUser, adminRole
 
         AppUserRole.withSession {
             it.flush()
             it.clear()
         }
 
-        assert AppUser.count() == 1
+        assert AppUser.count() == 2
         assert Role.count() == 2
-        assert AppUserRole.count() == 1
+        assert AppUserRole.count() == 2
     }
 
     def destroy = {
