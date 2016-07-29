@@ -36,9 +36,12 @@ The interests of an Artist's small world can be represented in a simple domain m
 ## Handy curl commands for testing end-points
   * **Login**
     `curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username":"me","password":"password"}' http://localhost:8080/api/login`
+    `curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username":"admin","password":"admin"}' http://localhost:8080/api/login`
   * **Validate token**
     `curl -i -H "Authorization: Bearer 664dkbafcuo4prsd02vocvlfvaok5nvl" http://localhost:8080/api/validate`
     `curl -i -H "X-Auth-Token: 664dkbafcuo4prsd02vocvlfvaok5nvl" http://localhost:8080/api/validate`
   * **Logout**
     `curl -i -H "Authorization: Bearer 664dkbafcuo4prsd02vocvlfvaok5nvl" http://localhost:8080/api/logout`
     `curl -i -H "X-Auth-Token: 664dkbafcuo4prsd02vocvlfvaok5nvl" http://localhost:8080/api/logout`
+  * **Spring Boot Actuator Management end-points**
+    `curl -i -H "X-Auth-Token: 664dkbafcuo4prsd02vocvlfvaok5nvl" http://localhost:8080/api/manamgement/info`
