@@ -13,7 +13,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     [pattern: '/**/css/**',      access: ['permitAll']],
     [pattern: '/**/images/**',   access: ['permitAll']],
     [pattern: '/**/favicon.ico', access: ['permitAll']],
+    //spring rest security api end-point
     [pattern: '/api/logout',     access: ['isAuthenticated()']],
+    //Spring boot Actuator management end-points
     [pattern: '/api/management/**', access:['ROLE_ADMIN']]
 ]
 
