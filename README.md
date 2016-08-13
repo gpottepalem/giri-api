@@ -1,7 +1,6 @@
 # giri-api
 ## Domain Model
-I picked an Artist's small world as the domain for this application. Like good developers do, Artists like simplicity. 
-So, I kept this model very simple, simple enough to cover all aspects of the features that I was exploring.
+I chose my primary hobby Painting which is an Artist's small world as the domain model for this application. Like good developers, Artists also like simplicity. So, I kept this model very simple, simple enough to cover all aspects of the features that I was exploring.
 The interests of an Artist's small world can be represented in a simple domain model as follows:
 ### Domain Objects
 
