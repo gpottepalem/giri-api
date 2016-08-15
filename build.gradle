@@ -31,6 +31,7 @@ ext {
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    jcenter() //Bintray JCenter repo for grails postgres-extensions plugin
 }
 
 dependencyManagement {
@@ -68,7 +69,9 @@ dependencies {
     compile "org.grails.plugins:spring-security-rest:${springSecurityRestVersion}"
     compile "org.grails.plugins:spring-security-rest-gorm:${springSecurityRestVersion}"
 
-    runtime "com.h2database:h2"
+    //grails postgresql extensions plugin for JSON type
+    compile 'org.grails.plugins:postgresql-extensions:4.6.6'
+
     runtime "org.postgresql:postgresql:9.4.1208.jre7" //Java JDBC 4.1 (JRE 7+) driver for PostgreSQL
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"

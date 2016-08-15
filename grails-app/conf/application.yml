@@ -1,5 +1,6 @@
 ---
 hibernate:
+    dialect: net.kaleidos.hibernate.PostgresqlExtensionsDialect #Grails Postgresql Extensions plugin
     cache:
         queries: false
         use_second_level_cache: true
