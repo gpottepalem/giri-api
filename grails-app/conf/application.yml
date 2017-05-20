@@ -1,5 +1,6 @@
 ---
 hibernate:
+    dialect: net.kaleidos.hibernate.PostgresqlExtensionsDialect #Grails Postgresql Extensions plugin
     cache:
         queries: false
         use_second_level_cache: true
@@ -9,23 +10,24 @@ hibernate:
 dataSource:
     pooled: true
     jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    driverClassName: org.postgresql.Driver
+    username: giriapi
+    password: giriapi
+    #dialect = org.hibernate.dialect.PostgreSQLDialect
 
 environments:
     development:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://localhost:5432/giriapi
     test:
         dataSource:
             dbCreate: update
-            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://localhost:5432/giriapi
     production:
         dataSource:
             dbCreate: update
-            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://localhost:5432/giriapi
             properties:
                 jmxEnabled: true
                 initialSize: 5
@@ -65,6 +67,9 @@ spring:
         template:
             check-template-location: false
 
+# customize Spring Boot Actuator end-points
+management:
+    context-path: /api/management
 ---
 grails:
     mime:
