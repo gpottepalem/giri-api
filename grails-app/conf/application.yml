@@ -56,6 +56,9 @@ grails:
     spring:
         transactionManagement:
             proxies: false
+    databinding:
+        dateFormats: ['MM/dd/yyyy']
+
 info:
     app:
         name: '@info.app.name@'

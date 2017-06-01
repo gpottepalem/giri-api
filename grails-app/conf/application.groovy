@@ -7,34 +7,25 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     [pattern: '/',                  access: ['permitAll']],
     [pattern: '/error',             access: ['permitAll']],
     [pattern: '/index',             access: ['permitAll']],
-    [pattern: '/index.gsp',         access: ['permitAll']],
-    [pattern: '/shutdown',          access: ['permitAll']],
-    [pattern: '/assets/**',         access: ['permitAll']],
-    [pattern: '/**/js/**',          access: ['permitAll']],
-    [pattern: '/**/css/**',         access: ['permitAll']],
-    [pattern: '/**/images/**',      access: ['permitAll']],
-    [pattern: '/**/favicon.ico',    access: ['permitAll']],
+    [pattern: '/login/auth',        access: ['denyAll']], //lock down spring security login form url
     //spring rest security api end-point
     [pattern: '/api/logout',        access: ['isAuthenticated()']],
     //Spring boot Actuator management end-points
     [pattern: '/api/management/**', access:['ROLE_ADMIN']]
 ]
 
-//grails.plugin.springsecurity.filterChain.chainMap = [
-//    [pattern: '/assets/**',      filters: 'none'],
-//    [pattern: '/**/js/**',       filters: 'none'],
-//    [pattern: '/**/css/**',      filters: 'none'],
-//    [pattern: '/**/images/**',   filters: 'none'],
-//    [pattern: '/**/favicon.ico', filters: 'none'],
-//    [pattern: '/**',             filters: 'JOINED_FILTERS']
-//]
+//Spring Security REST API plugin config
+String statelessFilters = 'JOINED_FILTERS, -exceptionTranslationFilter, -authenticationProcessingFilter, -securityContextPersistenceFilter, -rememberMeAuthenticationFilter'
 
-grails.plugin.springsecurity.filterChain.chainMap = [
+//common
+def filterChainChainMaps = [
     //Stateless chain
-    [ pattern: '/api/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'],
-    //Traditional chain
-    //[ pattern: '/**', filters: 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter']
+    [pattern: '/api/**', filters: statelessFilters],
+    [pattern: '/**',     filters: statelessFilters]
+    //Traditional stateful chain - We are stateless, no stateful chain is required
 ]
+
+grails.plugin.springsecurity.filterChain.chainMap = filterChainChainMaps
 
 grails.plugin.springsecurity.rest.token.storage.useGorm = true
 grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'com.giri.security.AuthenticationToken'

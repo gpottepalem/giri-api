@@ -1,0 +1,26 @@
+# GET Artists (index)
+curl -i -X GET  'http://localhost:8080/api/artists'
+
+# GET an Artist (show)
+curl -i -X GET  'http://localhost:8080/api/artists/7e88ab97-29d3-4eff-9feb-b0f628bd8bf2'
+
+# GET an Artist (show) - secured for a role
+curl -i -X GET -H "X-Auth-Token: bdib758jdie5e9m4fdfrlr5ppf6lh380" 'http://localhost:8080/api/artists/7e88ab97-29d3-4eff-9feb-b0f628bd8bf2'
+
+# Login as Admin
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username":"admin","password":"admin"}' http://localhost:8080/api/login
+
+# Logout
+curl -i -H "X-Auth-Token:664dkbafcuo4prsd02vocvlfvaok5nvl" -X POST http://localhost:8080/api/logout
+
+# Login as me user
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username":"me","password":"password"}' http://localhost:8080/api/login
+
+# POST Artist (save)
+curl -i -X POST -H "X-Auth-Token: 723dv85iaflpiud8apr00e7btfqp1h0g" -H "Content-Type: application/json" -d '{ "firstName": "Giri", "lastName": "Potte" }' 'http://localhost:8080/api/artists'
+
+# PUT Artist (update)
+curl -i -X PUT -H "X-Auth-Token: bdib758jdie5e9m4fdfrlr5ppf6lh380" -H "Content-Type: application/json" -d '{ "firstName": "Giri", "lastName": "Pottepalem" }' 'http://localhost:8080/api/artists/7e88ab97-29d3-4eff-9feb-b0f628bd8bf2'
+
+# DELETE Artist (delete)
+curl -i -X DELETE -H "X-Auth-Token: 723dv85iaflpiud8apr00e7btfqp1h0g" 'http://localhost:8080/api/artists/7e88ab97-29d3-4eff-9feb-b0f628bd8bf2'
