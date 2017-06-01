@@ -4,11 +4,13 @@ import grails.rest.Resource
 import grails.plugin.springsecurity.annotation.Secured
 
 /**
+ * Artist domain object.
+ *
  * @author Gpottepalem
  * Created on Aug 13, 2016
  */
-@Resource(uri = '/api/artists', readOnly = false, formats = ['json', 'xml'])
-@Secured(['permitAll'])
+//@Resource(uri = '/api/artists', readOnly = false, formats = ['json', 'xml'])
+//@Secured('ROLE_ADMIN')
 class Artist {
     UUID id
     String firstName
