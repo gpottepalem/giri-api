@@ -1,0 +1,113 @@
+= giri-api RESTful API Guide
+Giridhar Pottepalem
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP Methods
+
+giri-api API follows standard HTTP and REST conventions as closely as possible in its exposure of resources
+as end-points and use of HTTP methods (verbs).
+
+|===
+| HTTP Method |    Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PUT`
+| Used to update an existing resource
+
+| `PATCH`
+| Used to update an existing resource, partial updates
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+giri-api API follows standard HTTP and REST conventions as closely as possible in it's use of HTTP status
+codes.
+
+=== 2xx - Success codes
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+|===
+
+=== 4xx - Client side error
+|===
+| Status code | Usage
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `401 Unauthorized`
+| Either wrong credentials or no credentials provided
+
+| `402 Payment Required`
+| Credit card provided was declined
+
+| `403 Forbidden`
+| The user is not authorized to perform the operation
+
+| `404 Not Found`
+| The requested resource does not exist
+
+| `405 Method Not Allowed`
+| The method specified in the request is not allowed for the resource identified by the request URI
+
+| `409 Conflict`
+| The request could not be completed due to a conflict with the current state of the target resource
+|===
+
+=== 5xx - Server side error
+|===
+| Status code | Usage
+
+| `500 Internal Server error`
+| An unexpected error occurred on the server
+|===
+
+[[invalid-resource]]
+= Invalid end-point
+
+giri-api API responds with `404 Not Found` status code if any request for an invalid end-point is received.
+
+include::invalid-endpoint-error.adoc[]
+
+[[Validation]]
+= Validation Errors
+
+giri-api API validates requests and responds with `400 Bad Request` status code if the request data fails validation.
+In the response, along with the message, it also provides additional details including a list of validation errors.
+Each error in the list is a description containing the field name, actual data coming in the request, and a descriptive
+validation failure.
+
+include::artists-validation-errors.adoc[]
+
+[[resources]]
+= Resources
+
+include::artists.adoc[]

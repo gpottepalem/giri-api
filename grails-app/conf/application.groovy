@@ -1,9 +1,12 @@
+import grails.util.Environment
+
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.giri.security.AppUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.giri.security.AppUserRole'
 grails.plugin.springsecurity.authority.className = 'com.giri.security.Role'
 
-grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+//common
+def controllerAnnotationsStaticRuleMaps = [
     [pattern: '/',                  access: ['permitAll']],
     [pattern: '/error',             access: ['permitAll']],
     [pattern: '/index',             access: ['permitAll']],
@@ -14,6 +17,17 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
     [pattern: '/api/management/**', access:['ROLE_ADMIN']]
 ]
 
+//env specific
+if (Environment.current == Environment.PRODUCTION) {
+    controllerAnnotationsStaticRuleMaps << [pattern: '/static/docs/**', access:['permitAll']] //TODO: denyAll
+//    controllerAnnotationsStaticRuleMaps << [pattern: '/**',             access:['permitAll']] //TODO: denyAll
+} else {
+    controllerAnnotationsStaticRuleMaps << [pattern: '/static/docs/**', access:['permitAll']]
+//    controllerAnnotationsStaticRuleMaps << [pattern: '/**',             access:['permitAll']]
+}
+
+grails.plugin.springsecurity.controllerAnnotations.staticRules = controllerAnnotationsStaticRuleMaps
+
 //Spring Security REST API plugin config
 String statelessFilters = 'JOINED_FILTERS, -exceptionTranslationFilter, -authenticationProcessingFilter, -securityContextPersistenceFilter, -rememberMeAuthenticationFilter'
 
@@ -21,6 +35,7 @@ String statelessFilters = 'JOINED_FILTERS, -exceptionTranslationFilter, -authent
 def filterChainChainMaps = [
     //Stateless chain
     [pattern: '/api/**', filters: statelessFilters],
+    [pattern: '/static/docs/**', filters: statelessFilters],
     [pattern: '/**',     filters: statelessFilters]
     //Traditional stateful chain - We are stateless, no stateful chain is required
 ]

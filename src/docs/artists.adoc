@@ -1,0 +1,105 @@
+[[resources-artists]]
+== Artists
+
+An Artist is a resource which represents an Artist.
+
+[[resources-artists-list]]
+=== Listing Artists
+
+A `GET` request will list all of application's Artists. Each Artist has an id.
+
+==== Response structure
+
+include::{snippets}/artists-list-example/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/artists-list-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/artists-list-example/http-response.adoc[]
+
+[[resources-artists-retrieve-specific]]
+=== Retrieve an Artist
+
+A `GET` request for a specific Artist id will retrieve the details of an Artist
+
+==== Response structure
+
+include::{snippets}/artists-retrieve-specific-example/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/artists-retrieve-specific-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/artists-retrieve-specific-example/http-response.adoc[]
+
+[[resources-artists-create]]
+=== Creating an Artist
+
+A `POST` request is used to create a new Artist.
+
+TIP: An Artist can be created only by an Admin user (with role `ROLE_ADMIN`)
+
+IMPORTANT: Once a new Artist is created...
+
+==== Request structure
+
+include::{snippets}/artists-create-example/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/artists-create-example/curl-request.adoc[]
+
+==== Response structure
+
+include::{snippets}/artists-create-example/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/artists-create-example/http-response.adoc[]
+
+[[resources-artists-update]]
+=== Updating an Artist
+
+A `PUT` request is used to update an Artist.
+
+TIP: An Artist can only be updated by an Admin user (with role `ROLE_ADMIN`)
+
+IMPORTANT: An Artist can be updated if and only if ...
+
+==== Request structure
+
+include::{snippets}/artists-update-example/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/artists-update-example/curl-request.adoc[]
+
+==== Response structure
+
+include::{snippets}/artists-update-example/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/artists-update-example/http-response.adoc[]
+
+[[resources-artists-delete]]
+=== Deleting an Artist
+
+A `DELETE` request is used to delete an Artist.
+
+TIP: An Artist can only be deleted by an Admin user (with role `ROLE_ADMIN`)
+
+IMPORTANT: An Artist can be deleted if and only if...
+
+==== Example request
+
+include::{snippets}/artists-delete-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/artists-delete-example/http-response.adoc[]

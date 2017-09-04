@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus
  * @author Gpottepalem
  * Created on May 26, 2017
  */
-class ArtistController extends RestfulController {
+class ArtistController extends RestfulController<Artist> {
 
     static responseFormats = ['json', 'xml']
 
@@ -29,9 +29,9 @@ class ArtistController extends RestfulController {
     @Secured('permitAll')
     @Override
     def index(Integer max) {
-        respond([message: 'Access Denied'], status: HttpStatus.FORBIDDEN)
-        return
-        //super.index(max)
+//        respond([message: 'Access Denied'], status: HttpStatus.FORBIDDEN)
+//        return
+        super.index(max)
     }
 
     @Secured('ROLE_USER')
@@ -43,8 +43,10 @@ class ArtistController extends RestfulController {
 
     @Secured('ROLE_ADMIN')
     @Override
-    //@Transactional - exception
+    //@Transactional// - error StackOverflowError
     def save() {
+//        println request.JSON.firstName //Oh boy accessing JSON deletes json in the request body and it will not be available for binding to the resource object to save
+        println request.dump()
         super.save()
     }
 

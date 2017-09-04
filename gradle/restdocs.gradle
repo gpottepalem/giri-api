@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+    }
+}
+
+repositories {
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+}
+
+//add extra user-defined properties to the project through ext block
+ext {
+    snippetsDir = file('build/docs/generated-snippets') //output dir of rest api doc snippets generated
+    restDocsVersion = '2.0.0.BUILD-SNAPSHOT'
+    restAssuredVersion = '2.9.0'
+}
+
+dependencies {
+    testCompile "org.springframework.restdocs:spring-restdocs-core:$restDocsVersion"
+    testCompile "org.springframework.restdocs:spring-restdocs-restassured:$restDocsVersion"
+    testCompile "org.springframework.restdocs:spring-restdocs-asciidoctor:$restDocsVersion"
+}
+
+//task to clean generated rest api docs snippets dir
+task cleanSnippetsDir(type: Delete){
+    delete fileTree(dir: snippetsDir)
+}
+
+//configure test task
+test {
+    dependsOn cleanSnippetsDir //clean rest api docs generated before running tests
+    outputs.dir snippetsDir //add snippets dir as an output dir
+}
+
+//configure asciidoctor task provided by Gradle asciidoctor plugin- https://github.com/asciidoctor/asciidoctor-gradle-plugin
+asciidoctor {
+    doFirst{ //just print outputDir for reference during execution phase
+        println "Running asccidoctor task. Check generated REST docs under: ${outputDir}"
+    }
+    dependsOn integrationTest //integration tests are run before asciidoctor task
+    logDocuments = true
+    sourceDir = file('src/docs')
+    inputs.dir snippetsDir
+    separateOutputDirs = false
+    attributes 'snippets': snippetsDir //configure snippets attribute for .adoc files
+}
+
+/* Bundles generated API docs into war file.
+ * Spring boot serves static content under /public or /static or /resources or /META-INF/resources.
+ * Hooks into war task and adds asciidoctor task dependency, also copies generaed rest docs appropriately
+ * for bundling into war file.
+ */
+def publicDocsDir = 'WEB-INF/classes/public/docs'
+war {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}") {
+        into publicDocsDir
+    }
+}
+
+//build.dependsOn asciidoctor

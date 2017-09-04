@@ -1,6 +1,7 @@
 package com.giri.security
 
 import grails.test.mixin.TestFor
+import groovy.transform.NotYetImplemented
 import spock.lang.Specification
 
 /**
@@ -15,6 +16,7 @@ class AuthenticationTokenSpec extends Specification {
     def cleanup() {
     }
 
+    @NotYetImplemented
     void "test something"() {
         expect:"fix me"
             true == false
