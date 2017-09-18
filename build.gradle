@@ -17,6 +17,15 @@ plugins {
     id "org.asciidoctor.convert" version "1.5.3"
 }
 
+//run: gradle project to see the description of project
+description = """
+An Grails3 Restful API application with PostgreSQL as the back-end database.
+
+Project name: ${project.name}
+
+It demonstrates the ease of builing Restful application, securing it and automating the API document generation
+with 'Rest Assured' and 'Spring Rest Docs' frameworks.
+"""
 version "0.1"
 group "giri.api"
 
