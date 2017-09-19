@@ -2,8 +2,13 @@ language: groovy
 jdk:
   - openjdk8
 
-services:
-  - postgresql
+#services:
+#  - postgresql
+
+addons:
+  postgresql: "9.5"
+
+sudo: false
 
 before_script:
   - psql -c "CREATE DATABASE giriapi;" -U postgres
