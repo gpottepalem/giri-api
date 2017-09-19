@@ -10,6 +10,9 @@ before_script:
   - psql -c "CREATE USER giriapi WITH PASSWORD 'giriapi';" -U postgres
   - psql -c "GRANT ALL PRIVILEGES ON DATABASE giriapi TO giriapi;" -U postgres
 
+script:
+  - ./travis-build.sh
+
 notifications:
   email:
     recipients:
