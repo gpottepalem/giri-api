@@ -1,10 +1,10 @@
+language: groovy
+jdk:
+  - openjdk8
+
 services:
   - postgresql
 
 before_script:
-  - psql -c "CREATE DATABASE giriapi;" -U giriapi
+  - psql -c "CREATE DATABASE giriapi;" -U postgres
   - psql -c "CREATE USER giriapi WITH PASSWORD 'giriapi';" -U postgres
-
-language: groovy
-jdk:
-  - openjdk8
