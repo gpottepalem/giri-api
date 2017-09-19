@@ -19,15 +19,15 @@ environments:
     development:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:postgresql://localhost:5432/giriapi
+            url: jdbc:postgresql://localhost/giriapi
     test:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:postgresql://localhost:5432/giriapi
+            url: jdbc:postgresql://localhost/giriapi
     production:
         dataSource:
-            dbCreate: update
-            url: jdbc:postgresql://localhost:5432/giriapi
+            dbCreate: create-drop
+            url: jdbc:postgresql://localhost/giriapi
             properties:
                 jmxEnabled: true
                 initialSize: 5
