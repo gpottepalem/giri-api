@@ -15,8 +15,7 @@ before_script:
   - psql -c "create user giriapi with password 'giriapi';" -U postgres
   - psql -c "grant all privileges on database giriapi to giriapi;" -U postgres
 
-script:
-  - ./travis-build.sh
+script: ./travis-build.sh
 
 #notifications:
 #  email:
