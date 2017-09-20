@@ -6,23 +6,23 @@ jdk:
 #  - postgresql
 
 addons:
-  postgresql: "9.5"
+  postgresql: "9.4"
 
 sudo: false
 
 before_script:
-  - psql -c "CREATE DATABASE giriapi;" -U postgres
-  - psql -c "CREATE USER giriapi WITH PASSWORD 'giriapi';" -U postgres
-  - psql -c "GRANT ALL PRIVILEGES ON DATABASE giriapi TO giriapi;" -U postgres
+  - psql -c "create database giriapi;" -U postgres
+  - psql -c "create user giriapi with password 'giriapi';" -U postgres
+  - psql -c "grant all privileges on database giriapi to giriapi;" -U postgres
 
 script:
   - ./travis-build.sh
 
-notifications:
-  email:
-    recipients:
-      - gpottepalem@gmail.com
-      - gpottepalem@yahoo.com
-
-    on_success: change
-    on_failure: change
+#notifications:
+#  email:
+#    recipients:
+#      - gpottepalem@gmail.com
+#      - gpottepalem@yahoo.com
+#
+#    on_success: change
+#    on_failure: change
