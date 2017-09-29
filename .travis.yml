@@ -2,13 +2,16 @@ language: groovy
 jdk:
   - oraclejdk8
 
+before_install:
+  - chmod +x gradlew
+
 #services:
 #  - postgresql
 
 addons:
   postgresql: "9.4"
 
-sudo: false
+#sudo: false
 
 install: ./gradlew assemble --stacktrace
 
