@@ -13,7 +13,7 @@ addons:
 
 sudo: false # run on container-based infrastructure
 
-install: ./gradlew assemble --stacktrace
+install: ./gradlew assemble --stacktrace --debug
 
 before_script:
   - psql -c "create database giriapi;" -U postgres
