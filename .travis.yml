@@ -5,11 +5,11 @@ jdk:
 before_install:
   - chmod +x gradlew
 
-#services:
-#  - postgresql
+services:
+  - postgresql
 
-addons:
-  postgresql: "9.4"
+#addons:
+#  postgresql: "9.4"
 
 sudo: false # run on container-based infrastructure
 
