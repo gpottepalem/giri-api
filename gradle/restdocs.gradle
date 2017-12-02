@@ -11,14 +11,15 @@ repositories {
 //add extra user-defined properties to the project through ext block
 ext {
     snippetsDir = file('build/docs/generated-snippets') //output dir of rest api doc snippets generated
-    restDocsVersion = '2.0.0.BUILD-SNAPSHOT'
-    restAssuredVersion = '2.9.0'
+    restDocsVersion = '2.0.1.BUILD-SNAPSHOT'
+    restAssuredVersion = '3.0.6'
 }
 
 dependencies {
     testCompile "org.springframework.restdocs:spring-restdocs-core:$restDocsVersion"
     testCompile "org.springframework.restdocs:spring-restdocs-restassured:$restDocsVersion"
     testCompile "org.springframework.restdocs:spring-restdocs-asciidoctor:$restDocsVersion"
+    testCompile "io.rest-assured:rest-assured:$restAssuredVersion"
 }
 
 //task to clean generated rest api docs snippets dir

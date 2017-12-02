@@ -1,8 +1,10 @@
 package com.giri.security
 
+import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
+@GrailsCompileStatic
 @EqualsAndHashCode(includes='authority')
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Role implements Serializable {
@@ -19,8 +21,4 @@ class Role implements Serializable {
 		cache true
 	}
 
-	Role(String authority) {
-		this()
-		this.authority = authority
-	}
 }

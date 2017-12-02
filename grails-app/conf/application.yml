@@ -1,4 +1,77 @@
 ---
+grails:
+    profile: rest-api
+    codegen:
+        defaultPackage: com.giri
+    spring:
+        transactionManagement:
+            proxies: false
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
+    databinding:
+        dateFormats: ['MM/dd/yyyy']
+
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+spring:
+    main:
+        banner-mode: "off"
+    groovy:
+        template:
+            check-template-location: false
+
+# Spring Actuator Endpoints are Disabled by Default
+endpoints:
+    enabled: false
+    jmx:
+        enabled: true
+
+# customize Spring Boot Actuator end-points
+management:
+    context-path: /api/management
+---
+grails:
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            json:
+              - application/json
+              - text/json
+            hal:
+              - application/hal+json
+              - application/hal+xml
+            xml:
+              - text/xml
+              - application/xml
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            js: text/javascript
+            rss: application/rss+xml
+            text: text/plain
+            all: '*/*'
+    urlmapping:
+        cache:
+            maxsize: 1000
+    controllers:
+        defaultScope: singleton
+    converters:
+        encoding: UTF-8
+
+---
 hibernate:
     dialect: net.kaleidos.hibernate.PostgresqlExtensionsDialect #Grails Postgresql Extensions plugin
     cache:
@@ -18,16 +91,16 @@ dataSource:
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
-            url: jdbc:postgresql://localhost/giriapi
+            dbCreate: create
+            url: jdbc:postgresql://localhost:5432/giriapi-dev
     test:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:postgresql://localhost/giriapi
+            url: jdbc:postgresql://localhost:5432/giriapi-test
     production:
         dataSource:
-            dbCreate: create-drop
-            url: jdbc:postgresql://localhost/giriapi
+            dbCreate: none
+            url: jdbc:postgresql://localhost:5432/giriapi
             properties:
                 jmxEnabled: true
                 initialSize: 5
@@ -48,68 +121,3 @@ environments:
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
 
 ---
----
-grails:
-    profile: rest-api
-    codegen:
-        defaultPackage: com.giri
-    spring:
-        transactionManagement:
-            proxies: false
-    databinding:
-        dateFormats: ['MM/dd/yyyy']
-
-info:
-    app:
-        name: '@info.app.name@'
-        version: '@info.app.version@'
-        grailsVersion: '@info.app.grailsVersion@'
-spring:
-
-    groovy:
-        template:
-            check-template-location: false
-
-# customize Spring Boot Actuator end-points
-management:
-    context-path: /api/management
----
-grails:
-    mime:
-        disable:
-            accept:
-                header:
-                    userAgents:
-                        - Gecko
-                        - WebKit
-                        - Presto
-                        - Trident
-        types:
-            all: '*/*'
-            atom: application/atom+xml
-            css: text/css
-            csv: text/csv
-            form: application/x-www-form-urlencoded
-            html:
-              - text/html
-              - application/xhtml+xml
-            js: text/javascript
-            json:
-              - application/json
-              - text/json
-            multipartForm: multipart/form-data
-            rss: application/rss+xml
-            text: text/plain
-            hal:
-              - application/hal+json
-              - application/hal+xml
-            xml:
-              - text/xml
-              - application/xml
-    urlmapping:
-        cache:
-            maxsize: 1000
-    controllers:
-        defaultScope: singleton
-    converters:
-        encoding: UTF-8
