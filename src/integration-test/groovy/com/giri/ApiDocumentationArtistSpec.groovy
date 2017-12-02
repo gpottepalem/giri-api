@@ -2,7 +2,7 @@ package com.giri
 
 import geb.spock.GebSpec
 import grails.plugins.rest.client.RestBuilder
-import grails.test.mixin.integration.Integration
+import grails.testing.mixin.integration.Integration
 import grails.transaction.Rollback
 import groovy.json.JsonSlurper
 import io.restassured.RestAssured
@@ -41,9 +41,9 @@ class ApiDocumentationArtistSpec extends GebSpec {
 
     def setup() {
         //set documentation specification
-        this.documentationSpec = new RequestSpecBuilder().addFilter(
-            documentationConfiguration(this.restDocumentation))
-            .build()
+        this.documentationSpec = new RequestSpecBuilder()
+                .addFilter(documentationConfiguration(this.restDocumentation))
+                .build()
     }
 
     /**

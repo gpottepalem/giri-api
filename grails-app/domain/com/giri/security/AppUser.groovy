@@ -1,15 +1,15 @@
 package com.giri.security
 
+import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
+@GrailsCompileStatic
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
 class AppUser implements Serializable {
 
 	private static final long serialVersionUID = 1
-
-	transient springSecurityService
 
 	String username
 	String password
@@ -18,28 +18,8 @@ class AppUser implements Serializable {
 	boolean accountLocked
 	boolean passwordExpired
 
-	AppUser(String username, String password) {
-		this()
-		this.username = username
-		this.password = password
-	}
-
 	Set<Role> getAuthorities() {
-		AppUserRole.findAllByAppUser(this)*.role
-	}
-
-	def beforeInsert() {
-		encodePassword()
-	}
-
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
-
-	protected void encodePassword() {
-		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+		(AppUserRole.findAllByAppUser(this) as List<AppUserRole>)*.role as Set<Role>
 	}
 
 	static transients = ['springSecurityService']

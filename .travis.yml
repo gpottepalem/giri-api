@@ -1,0 +1,32 @@
+language: groovy
+jdk:
+  - oraclejdk8
+
+before_install:
+  - chmod +x gradlew
+
+services:
+  - postgresql
+
+#addons:
+#  postgresql: "9.4"
+
+sudo: false # run on container-based infrastructure
+
+install: ./gradlew assemble --stacktrace --info
+
+before_script:
+  - psql -c "create database giriapi;" -U postgres
+  - psql -c "create user giriapi with password 'giriapi';" -U postgres
+#  - psql -c "grant all privileges on database giriapi to giriapi;" -U postgres
+
+# script: ./travis-build.sh
+
+#notifications:
+#  email:
+#    recipients:
+#      - gpottepalem@gmail.com
+#      - gpottepalem@yahoo.com
+#
+#    on_success: change
+#    on_failure: change
