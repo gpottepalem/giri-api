@@ -1,10 +1,12 @@
 package com.giri.security
 
+import grails.compiler.GrailsCompileStatic
 import grails.gorm.DetachedCriteria
 import groovy.transform.ToString
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 
+@GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class AppUserRole implements Serializable {
     private static final long serialVersionUID = 1
@@ -42,9 +44,9 @@ class AppUserRole implements Serializable {
         }
     }
 
-    static AppUserRole create(AppUser appUser, Role role) {
+    static AppUserRole create(AppUser appUser, Role role, boolean flush = false) {
         def instance = new AppUserRole(appUser: appUser, role: role)
-        instance.save()
+        instance.save(flush: flush)
         instance
     }
 
@@ -55,20 +57,19 @@ class AppUserRole implements Serializable {
     }
 
     static int removeAll(AppUser u) {
-        u == null ? 0 : AppUserRole.where { appUser == u }.deleteAll()
+        u == null ? 0 : AppUserRole.where { appUser == u }.deleteAll() as int
     }
 
     static int removeAll(Role r) {
-        r == null ? 0 : AppUserRole.where { role == r }.deleteAll()
+        r == null ? 0 : AppUserRole.where { role == r }.deleteAll() as int
     }
 
     static constraints = {
-        role validator: { Role r, AppUserRole ur ->
+        appUser nullable: false
+        role nullable: false, validator: { Role r, AppUserRole ur ->
             if (ur.appUser?.id) {
-                AppUserRole.withNewSession {
-                    if (AppUserRole.exists(ur.appUser.id, r.id)) {
-                        return ['userRole.exists']
-                    }
+                if (AppUserRole.exists(ur.appUser.id, r.id)) {
+                    return ['userRole.exists']
                 }
             }
         }
