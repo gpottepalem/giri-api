@@ -13,12 +13,12 @@ services:
 
 sudo: false # run on container-based infrastructure
 
-install: ./gradlew assemble --stacktrace --info
+install: ./gradlew -Dgrails.env=test clean assemble --stacktrace --info
 
 before_script:
-  - psql -c "create database giriapi;" -U postgres
+  - psql -c "create database giriapi-test;" -U postgres
   - psql -c "create user giriapi with password 'giriapi';" -U postgres
-#  - psql -c "grant all privileges on database giriapi to giriapi;" -U postgres
+  - psql -c "grant all privileges on database giriapi-test to giriapi;" -U postgres
 
 # script: ./travis-build.sh
 
