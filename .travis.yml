@@ -1,32 +1,17 @@
 language: groovy
-jdk:
-  - oraclejdk8
-
-before_install:
-  - chmod +x gradlew
-
+sudo: false # run on container-based infrastructure
 services:
   - postgresql
 
-#addons:
-#  postgresql: "9.4"
-
-sudo: false # run on container-based infrastructure
-
-install: ./gradlew -Dgrails.env=test clean assemble --stacktrace --info
+jdk:
+  - openjdk8
 
 before_script:
-  - psql -c "create database giriapi-test;" -U postgres
+  - psql -c "create database giriapi_test;" -U postgres
   - psql -c "create user giriapi with password 'giriapi';" -U postgres
-  - psql -c "grant all privileges on database giriapi-test to giriapi;" -U postgres
+  - psql -c "grant all privileges on database giriapi_test to giriapi;" -U postgres
 
-# script: ./travis-build.sh
+install: /bin/true
 
-#notifications:
-#  email:
-#    recipients:
-#      - gpottepalem@gmail.com
-#      - gpottepalem@yahoo.com
-#
-#    on_success: change
-#    on_failure: change
+script:
+  - ./travis-build.sh

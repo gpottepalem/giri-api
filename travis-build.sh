@@ -1,11 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
+echo "Running Gradle Task: ./gradlew -Dgrails.env=test clean assemble --stacktrace ..."
 
-echo "Assembling....."
-./gradlew assemble --stacktrace
-
-EXIT_STATUS = 0
-
+./gradlew -Dgrails.env=test clean assemble
 
 exit $EXIT_STATUS
