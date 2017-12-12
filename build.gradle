@@ -107,4 +107,22 @@ tasks.withType(Test) {
     systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
 
+/**
+ * Configure test and integrationTest tasks.
+ * Added beforeTest closure to get notified before a test is run. The closure simply logs the test descriptor which
+ * indicates the test method that is being executed. Added to help find the test execution order differences between two
+ * test runs or even differences between two systems like local, ci etc.
+ */
+test {
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
+
+integrationTest {
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
+
 apply from: 'gradle/restdocs.gradle'
