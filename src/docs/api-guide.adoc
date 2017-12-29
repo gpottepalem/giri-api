@@ -89,7 +89,7 @@ codes.
 | `500 Internal Server error`
 | An unexpected error occurred on the server
 |===
-
+////
 [[invalid-resource]]
 = Invalid end-point
 
@@ -106,7 +106,7 @@ Each error in the list is a description containing the field name, actual data c
 validation failure.
 
 include::artists-validation-errors.adoc[]
-
+////
 [[resources]]
 = Resources
 

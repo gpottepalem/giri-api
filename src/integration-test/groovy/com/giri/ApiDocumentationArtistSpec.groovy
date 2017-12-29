@@ -95,26 +95,45 @@ class ApiDocumentationArtistSpec extends GebSpec {
                     )
                 )
              )
-        println "port:${port}"
 
-        when: "get request is made to end-point"
+        when: "GET request is made to end-point for list of Artists"
         def response = requestSpecification
             .when()
             .port(this.port)
             .get(ARTISTS_ENDPOINT)
 
+        def responseJsonObject = new JsonSlurper().parseText(response.body().asString())
+
         then: "status is OK"
         response.then()
             .assertThat()
             .statusCode(HttpStatus.OK.value())
+
+        responseJsonObject instanceof List
+        responseJsonObject.size() == 1
+        responseJsonObject[0].firstName == 'Giridhar'
+        responseJsonObject[0].lastName == 'Pottepalem'
     }
 
     void "Test and document show Artist request (GET request, show action) to end-point: /api/artists"() {
-        given: "Pick an artist to show"
-        Artist artist = Artist.first()
+        given: "An Artist is created by Admin in the system"
+        String accessToken = authenticateUser('admin', 'admin')
+        def response = RestAssured.given()
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-Auth-Token", "${accessToken}")
+                .body("""{ "firstName" : "Giridhar", "lastName" : "Pottepalem" }""")
+                .when()
+                .port(this.port)
+                .post(ARTISTS_ENDPOINT)
+        response.then().assertThat().statusCode(HttpStatus.CREATED.value())
+        def responseJsonObject = new JsonSlurper().parseText(response.body().asString())
+
+        and: "Pick the artist's id just created to show"
+        String artistId = responseJsonObject.id
 
         and: "user logs in by a POST request to end-point: /api/login"
-        String accessToken = authenticateUser('me', 'password')
+        accessToken = authenticateUser('me', 'password')
 
         and: "documentation specification for showing an Artist"
         RequestSpecification requestSpecification = RestAssured.given(this.documentationSpec)
@@ -133,13 +152,13 @@ class ApiDocumentationArtistSpec extends GebSpec {
             )
 
         when: "GET request is sent"
-        def response = requestSpecification
+        response = requestSpecification
             .header("X-Auth-Token", "${accessToken}")
             .when()
             .port(this.port)
-            .get("${ARTISTS_ENDPOINT}/${artist.id}")
+            .get("${ARTISTS_ENDPOINT}/${artistId}")
 
-        def responseJson = new JsonSlurper().parseText(response.body().asString())
+        responseJsonObject = new JsonSlurper().parseText(response.body().asString())
 
         then: "The response is correct"
         response.then()
@@ -147,14 +166,11 @@ class ApiDocumentationArtistSpec extends GebSpec {
             .statusCode(HttpStatus.OK.value())
 
         and: "response contains the id of Artist asked for"
-        responseJson.id
+        responseJsonObject.id == artistId
     }
 
     void "Test and document create Artist request (POST request, save action) to end-point: /api/artists"() {
-        given: "current number of Artists"
-        int nArtists = Artist.count()
-
-        and: "admin logs in by a POST request to end-point: /api/login"
+        given: "admin logs in by a POST request to end-point: /api/login"
         String accessToken = authenticateUser('admin', 'admin')
 
         and: "documentation specification for creating an Artist"
@@ -196,7 +212,7 @@ class ApiDocumentationArtistSpec extends GebSpec {
         responseJson.id
 
         and: "Number of Artists in the system goes up by one"
-        Artist.count() == nArtists + 1
+        Artist.count() == old(Artist.count()) + 1
 
         //ERROR tests
 //        when: "The save action is executed with no content"
@@ -225,8 +241,22 @@ class ApiDocumentationArtistSpec extends GebSpec {
     }
 
     void "Test and document update Artist request (PUT request, update action) to end-point: /api/artists"() {
-        given: "Pick an artist to update"
-        Artist artist = Artist.first()
+        given: "An Artist is created by Admin in the system"
+        String accessToken = authenticateUser('admin', 'admin')
+        def response = RestAssured.given()
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-Auth-Token", "${accessToken}")
+                .body("""{ "firstName" : "Giridhar", "lastName" : "Pottepalem" }""")
+                .when()
+                .port(this.port)
+                .post(ARTISTS_ENDPOINT)
+        response.then().assertThat().statusCode(HttpStatus.CREATED.value())
+        def responseJsonObject = new JsonSlurper().parseText(response.body().asString())
+
+        and: "Pick the artist's id just created to update"
+        String artistId = responseJsonObject.id
+        String artistLastName = responseJsonObject.lastName
 
         and: "documentation specification for updating an Artist"
         RequestSpecification requestSpecification = RestAssured.given(this.documentationSpec)
@@ -249,15 +279,15 @@ class ApiDocumentationArtistSpec extends GebSpec {
         )
 
         when: "user logs in by a POST request to end-point: /api/login"
-        String accessToken = authenticateUser('me', 'password')
+        accessToken = authenticateUser('me', 'password')
 
         and: "PUT request is sent with valid data"
-        def response = requestSpecification
+        response = requestSpecification
             .header("X-Auth-Token", "${accessToken}")
-            .body("""{ "lastName" : "${artist.lastName}(updated)" }""")
+            .body("""{ "lastName" : "${artistLastName}(updated)" }""")
             .when()
             .port(this.port)
-            .put("${ARTISTS_ENDPOINT}/${artist.id}")
+            .put("${ARTISTS_ENDPOINT}/${artistId}")
         def responseJson = new JsonSlurper().parseText(response.body().asString())
 
         then: "The response is correct"
@@ -266,19 +296,30 @@ class ApiDocumentationArtistSpec extends GebSpec {
             .statusCode(HttpStatus.OK.value())
 
         and: "response contains the Artist updated"
-        responseJson.id == artist.id.toString()
-        responseJson.lastName == "${artist.lastName}(updated)"
+        responseJson.id == artistId
+        responseJson.lastName == "${artistLastName}(updated)"
     }
 
     void "Test and document delete Artist request (DELETE request, delete action) to end-point: /api/artists"() {
-        given: "current number of Artists"
-        int nArtists = Artist.count()
+        given: "An Artist is created by Admin in the system"
+        String accessToken = authenticateUser('admin', 'admin')
+        def response = RestAssured.given()
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-Auth-Token", "${accessToken}")
+                .body("""{ "firstName" : "Giridhar", "lastName" : "Pottepalem" }""")
+                .when()
+                .port(this.port)
+                .post(ARTISTS_ENDPOINT)
+        response.then().assertThat().statusCode(HttpStatus.CREATED.value())
+        def responseJsonObject = new JsonSlurper().parseText(response.body().asString())
 
-        and: "Pick an artist to delete"
-        Artist artist = Artist.first()
+        and: "Pick the artist's id just created to delete"
+        String artistId = responseJsonObject.id
+        assert Artist.exists(artistId)
 
         and: "admin logs in by a POST request to end-point: /api/login"
-        String accessToken = authenticateUser('admin', 'admin')
+        accessToken = authenticateUser('admin', 'admin')
 
         and: "documentation specification for deleting an Artist"
         RequestSpecification requestSpecification = RestAssured.given(this.documentationSpec)
@@ -286,22 +327,19 @@ class ApiDocumentationArtistSpec extends GebSpec {
             .filter( RestAssuredRestDocumentation.document('artists-delete-example') )
 
         when: "DELETE request is sent"
-        def response = requestSpecification
+        response = requestSpecification
             .header("X-Auth-Token", "${accessToken}")
             .when()
             .port(this.port)
-            .delete("${ARTISTS_ENDPOINT}/${artist.id}")
+            .delete("${ARTISTS_ENDPOINT}/${artistId}")
 
         then: "The response is correct"
         response.then()
             .assertThat()
             .statusCode(HttpStatus.NO_CONTENT.value())
 
-        and: "Number of Artists in the system goes down by one"
-        Artist.count() == nArtists - 1
-
         and: "Deleted Artist is not there anymore in the system"
-        !Artist.exists(artist.id)
+        !Artist.exists(artistId)
     }
 
 }
