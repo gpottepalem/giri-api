@@ -316,6 +316,7 @@ class ApiDocumentationArtistSpec extends GebSpec {
 
         and: "Pick the artist's id just created to delete"
         String artistId = responseJsonObject.id
+        assert Artist.exists(artistId)
 
         and: "admin logs in by a POST request to end-point: /api/login"
         accessToken = authenticateUser('admin', 'admin')
