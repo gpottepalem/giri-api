@@ -337,9 +337,6 @@ class ApiDocumentationArtistSpec extends GebSpec {
             .assertThat()
             .statusCode(HttpStatus.NO_CONTENT.value())
 
-        and: "Number of Artists in the system goes down by one"
-        Artist.count() == old(Artist.count()) - 1
-
         and: "Deleted Artist is not there anymore in the system"
         !Artist.exists(artistId)
     }
