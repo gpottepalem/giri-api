@@ -50,7 +50,7 @@ simple domain model as follows:
   * Anybody can see list of Artists and artWorks
   * An Admin user can ONLY delete an Artist
   * An Artist can update his/her profile or artWorks
-## How to get and run the app
+## Run the app
 Clone the repository and run gradle task: `asciidoctor`
 
 ```
